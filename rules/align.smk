@@ -23,7 +23,7 @@ rule align:
         # path to STAR reference genome index
         index=config["ref"]["index"],
         # optional parameters
-        extra="--quantMode GeneCounts {}".format(
+        extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(
               config["ref"]["annotation"], config["params"]["star"])
     threads: 4
     wrapper:

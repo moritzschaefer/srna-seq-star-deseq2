@@ -10,10 +10,10 @@ adapter: TGGAATTCTCGGGTGCCAAG
 
 ref:
   # the STAR index
-  index: "/home/moritz/data/star-2.6/"
+  index: "~/data/star-2.6/"
   # gtf file with transcripts
   # mmu.gtf in version v21
-  annotation: "mmu.gff"
+  annotation: "~/data/mmu21.gff"
 
 pca:
   labels:
