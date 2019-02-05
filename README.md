@@ -1,3 +1,9 @@
+# Aim
+
+Aim of this project is to replicate jians small rna seq analysis
+
+TODO: make private..
+
 # Snakemake workflow: rna-seq-star-deseq2
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥5.2.1-brightgreen.svg)](https://snakemake.bitbucket.io)

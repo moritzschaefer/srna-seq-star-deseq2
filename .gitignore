@@ -1,4 +1,24 @@
+# .conda/
+# .snakemake/
+# data/
+# logs/
+# *.gtf
+# *.gff3
+# trimmed/
 *
+!wrappers
+!wrappers/*
+!wrappers/star
+!wrappers/star/*
+!wrappers/star/align
+!wrappers/star/align/*
+!wrappers
+!wrappers/*
+!wrappers/subread
+!wrappers/subread/*
+!wrappers/subread/feature_counts
+!wrappers/subread/feature_counts/*
+
 !scripts
 !scripts/*
 !scripts/common
@@ -6,7 +26,8 @@
 scripts/.snakemake*
 !Snakefile
 !config.yaml
-!samples.tsv
+!samples.csv
+!units.csv
 !resources
 !resources/*
 !envs
