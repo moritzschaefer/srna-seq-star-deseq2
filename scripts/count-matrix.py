@@ -1,14 +1,11 @@
 import pandas as pd
+from os import path
 
-counts = [pd.read_table(f, index_col=0, usecols=[0, 1], header=None, skiprows=4)
-          for f in snakemake.input]
+frames = (pd.read_csv(fp, sep="\t", skiprows=1, index_col=list(range(6)))
+          for fp in snakemake.input)
+merged = pd.concat(frames, axis=1)
 
-for t, (sample, unit) in zip(counts, snakemake.params.units.index):
-    t.columns = [sample]
+# Extract sample names.
+merged = merged.rename(columns=lambda c: path.splitext(path.basename(c))[0])
 
-matrix = pd.concat(counts, axis=1)
-matrix.index.name = "gene"
-# collapse technical replicates
-matrix = matrix.groupby(matrix.columns, axis=1).sum()
-print(matrix)
-matrix.to_csv(snakemake.output[0], sep="\t")
+merged.to_csv(snakemake.output[0], sep="\t", index=True)

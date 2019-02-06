@@ -10,10 +10,10 @@ adapter: TGGAATTCTCGGGTGCCAAG
 
 ref:
   # the STAR index
-  index: "~/data/star-2.6/"
+  index: "~/data/star-2.4/"
   # gtf file with transcripts
   # mmu.gtf in version v21
-  annotation: "~/data/mmu21.gff"
+  annotation: "~/data/mmu21.gff3"
 
 pca:
   labels:
@@ -27,7 +27,9 @@ diffexp:
       - treated
       - untreated
 
+
 params:
   star: "--outFilterMismatchNoverLmax 0.05"  # leads to 0 mismatch for <20b and 1 masmatich 20-39bp
-  cutadapt-se: ""
+  feature_counts: ""
+  cutadapt-se: "-m 17 -M 30"
   cutadapt-pe: ""

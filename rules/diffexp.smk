@@ -1,16 +1,3 @@
-rule count_matrix:
-    input:
-        expand("star/{unit.sample}-{unit.unit}/ReadsPerGene.out.tab", unit=units.itertuples())
-    output:
-        "counts/all.tsv"
-    params:
-        units=units
-    conda:
-        "../envs/pandas.yaml"
-    script:
-        "../scripts/count-matrix.py"
-
-
 def get_deseq2_threads(wildcards=None):
     # https://twitter.com/mikelove/status/918770188568363008
     few_coeffs = False if wildcards is None else len(get_contrast(wildcards)) < 10

@@ -37,54 +37,59 @@ def estimate_size_factors(counts):
 
 
 def feature_counts_extra(wildcards):
-    extra = config["feature_counts"]["extra"]
-    if is_paired:
-        extra += " -p"
+    extra = config["params"]["feature_counts"]
+    # if is_paired:
+    #     extra += " -p"
     return extra
 
 
+rule index_bam:
+    input:
+        bam="star/{sample}-{unit}/Aligned.out.bam"
+    output:
+        bam="star/{sample}-{unit}/Aligned.sorted.bam",
+        bai="star/{sample}-{unit}/Aligned.sorted.bam.bai"
+    conda:
+        "../envs/samtools.yaml"
+    shell:
+        """samtools sort -o {output.bam} {input.bam}
+        samtools index {output.bam}"""
+
 rule feature_counts:
     input:
-        bam="bam/final/{sample}.bam",
-        bai="bam/final/{sample}.bam.bai",
+        # see STAR manual for additional output files
+        bam="star/{sample}-{unit}/Aligned.sorted.bam",
+        bai="star/{sample}-{unit}/Aligned.sorted.bam.bai",
     output:
-        counts="counts/per_sample/{sample}.txt",
-        summary="qc/feature_counts/{sample}.txt"
+        counts="counts/{sample}-{unit}/featureCounts.txt",
+        summary="qc/{sample}-{unit}/featureCounts.txt"
     params:
-        annotation=config["feature_counts"]["annotation"],
+        annotation=config["ref"]["annotation"],
         extra=feature_counts_extra
     threads:
-        config["feature_counts"]["threads"]
+        4
     log:
-        "logs/feature_counts/{sample}.txt"
+        "logs/feature_counts/{sample}-{unit}.txt"
     wrapper:
         "file://" + path.join(workflow.basedir, "wrappers/subread/feature_counts")
 
 
 rule merge_counts:
     input:
-        expand("counts/per_sample/{sample}.txt", sample=get_samples())
+        expand("counts/{unit.sample}-{unit.unit}/featureCounts.txt", unit=units.itertuples())
     output:
-        "counts/merged.txt"
-    run:
-        # Merge count files.
-        frames = (pd.read_csv(fp, sep="\t", skiprows=1,
-                        index_col=list(range(6)))
-            for fp in input)
-        merged = pd.concat(frames, axis=1)
-
-        # Extract sample names.
-        merged = merged.rename(
-            columns=lambda c: path.splitext(path.basename(c))[0])
-
-        merged.to_csv(output[0], sep="\t", index=True)
+        "counts/all.tsv"
+    conda:
+        "../envs/pandas.yaml"
+    script:
+        "../scripts/count-matrix.py"
 
 
 rule normalize_counts:
     input:
-        "counts/merged.txt"
+        "counts/all.tsv"
     output:
-        "counts/merged.log2.txt"
+        "counts/all.log2.tsv"
     run:
         counts = pd.read_csv(input[0], sep="\t", index_col=list(range(6)))
         norm_counts = np.log2(normalize_counts(counts) + 1)

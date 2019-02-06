@@ -17,6 +17,7 @@ rule cutadapt_pe:
         "0.17.4/bio/cutadapt/pe"
 
 
+# TODO make sure we use version 1.8.1
 rule cutadapt:
     input:
         get_fastq

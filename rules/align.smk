@@ -16,15 +16,19 @@ rule align:
     output:
         # see STAR manual for additional output files
         "star/{sample}-{unit}/Aligned.out.bam",
-        "star/{sample}-{unit}/ReadsPerGene.out.tab"
+        # "star/{sample}-{unit}/ReadsPerGene.out.tab"
     log:
         "logs/star/{sample}-{unit}.log"
     params:
         # path to STAR reference genome index
         index=config["ref"]["index"],
         # optional parameters
-        extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(
-              config["ref"]["annotation"], config["params"]["star"])
-    threads: 4
+        extra="{}".format(config["params"]["star"])
+
+        # TODO requires --sjdbGTFtagExonParentTranscript Parent --sjdbGTFfeatureExon miRNA_primary_transcript
+
+        # extra="--quantMode GeneCounts --sjdbGTFfile {} {}".format(
+        #       config["ref"]["annotation"], config["params"]["star"])
+    threads: 10
     wrapper:
         "file://" + path.join(workflow.basedir, "wrappers/star/align")

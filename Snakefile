@@ -44,5 +44,5 @@ report: "report/workflow.rst"
 include: "rules/common.smk"
 include: "rules/trim.smk"
 include: "rules/align.smk"
-# include: "rules/count.smk"  # TODO need to use featureCounts for better replication
+include: "rules/count.smk"
 include: "rules/diffexp.smk"
