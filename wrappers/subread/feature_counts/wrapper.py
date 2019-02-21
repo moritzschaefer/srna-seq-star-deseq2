@@ -6,15 +6,14 @@ log = snakemake.log_fmt_shell(stdout=False, stderr=True)
 
 shell("featureCounts"
       " {snakemake.params.extra}"
-      " -a {snakemake.params.annotation}"
+      " -a {snakemake.input.annotation}"
       " -o {snakemake.output.counts}"
       " -T {snakemake.threads}"
-      " -M -f -O -t miRNA -g Name"
       " {snakemake.input.bam} {log}")
 
 # fix column header
-shell("sed 's/%s/{snakemake.wildcards.sample}/' {snakemake.output.counts}" %
-      (Path(snakemake.input.bam).name, ))
+shell("sed -i 's/%s/{snakemake.wildcards.sample}/' {snakemake.output.counts}" %
+      (snakemake.input.bam.replace('/', '\/'), ))
 
 # Move summary to expected location.
 summary_path = snakemake.output.counts + '.summary'
