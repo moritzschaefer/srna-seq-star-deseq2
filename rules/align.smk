@@ -31,6 +31,5 @@ rule align:
         #       config["ref"]["annotation"], config["params"]["star"])
     threads: 10
     wrapper:
-        # "file://" + path.join(workflow.basedir, "wrappers/star/align")
-        "file:///home/schamori/moritzsphd/lib/srna-seq-star-deseq2/wrappers/star/align"  # TODO get this right (use github!!)
-        # "https://github.com/moritzschaefer/srna-seq-star-deseq2/wrappers/star/align"
+        "https://raw.githubusercontent.com/moritzschaefer/srna-seq-star-deseq2/master/wrappers/star/align"
+        # "file:///home/schamori/moritzsphd/lib/srna-seq-star-deseq2/wrappers/star/align"

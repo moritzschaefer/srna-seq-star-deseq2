@@ -39,9 +39,7 @@ rule feature_counts:
         4
     wrapper:
         "https://raw.githubusercontent.com/moritzschaefer/srna-seq-star-deseq2/master/wrappers/subread/feature_counts"
-        # "file:///home/schamori/moritzsphd/lib/srna-seq-star-deseq2/wrappers/subread/feature_counts"  # TODO get this right: use github!!
-
-        # "file://" + path.join(workflow.basedir, "wrappers/subread/feature_counts")
+        # "file:///home/schamori/moritzsphd/lib/srna-seq-star-deseq2/wrappers/subread/feature_counts"
 
 
 rule merge_counts:
